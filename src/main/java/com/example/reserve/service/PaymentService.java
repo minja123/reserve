@@ -1,5 +1,6 @@
 package com.example.reserve.service;
 
+import com.example.reserve.dto.PaymentRequest;
 import com.example.reserve.entity.Payment;
 import com.example.reserve.entity.PaymentStatus;
 import com.example.reserve.entity.Reservation;
@@ -7,6 +8,7 @@ import com.example.reserve.exception.ReservationException;
 import com.example.reserve.repository.PaymentRepository;
 import com.example.reserve.repository.ReservationRepository;
 import com.example.reserve.repository.TimeSlotRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +22,14 @@ public class PaymentService {
     private final ReservationRepository reservationRepository;
     private final TimeSlotRepository timeSlotRepository;
 
-    public void processPayment(Long reservationId, String decision) {
-        Payment payment = paymentRepository.findByReservationId(reservationId)
+    @Transactional
+    public void processPayment(PaymentRequest request) {
+        Payment payment = paymentRepository.findByReservationId(request.getReservationId())
                 .orElseThrow(() -> new ReservationException("결제 정보를 찾을 수 없습니다."));
 
         Reservation reservation = payment.getReservation();
 
-        if ("SUCCESS".equals(decision)) {
+        if ("SUCCESS".equals(request.getDecision())) {
             //1. 결제 완료 처리
             payment.complete("MOCK_KEY_" + UUID.randomUUID());
 

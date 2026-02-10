@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(
@@ -15,6 +19,7 @@ import lombok.ToString;
                 )
         }
 )
+@EntityListeners(AuditingEntityListener.class)
 @Getter @Setter
 @ToString
 public class Reservation {
@@ -29,6 +34,10 @@ public class Reservation {
 
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
+
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
 
     public static Reservation create(String userEmail, Long timeSlotId) {
         Reservation r = new Reservation();

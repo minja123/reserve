@@ -5,6 +5,7 @@ import com.example.reserve.repository.TimeSlotRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -13,8 +14,8 @@ public class TimeslotService {
 
     private final TimeSlotRepository timeSlotRepository;
 
-    public List<TimeslotResponse> findByResourceId(Long id) {
-        return timeSlotRepository.findByResourceId(id).stream()
+    public List<TimeslotResponse> findByResourceId(Long id, LocalDate date) {
+        return timeSlotRepository.findByResourceIdAndReservationDate(id, date).stream()
                 .map(TimeslotResponse::from)
                 .toList();
     }

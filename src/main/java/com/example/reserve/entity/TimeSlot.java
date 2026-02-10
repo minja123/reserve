@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Table(name = "timeSlot")
 @Entity
@@ -18,8 +20,9 @@ public class TimeSlot {
     @JoinColumn(name = "resource_id")
     private Resource resource;
 
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private LocalDate reservationDate; // 날짜 필드 추가 (2024-05-20 등)
+    private LocalTime startTime; // 시작 시간
+    private LocalTime endTime; // 종료 시간
 
     @Enumerated(EnumType.STRING)
     private TimeSlotStatus status;
@@ -27,6 +30,8 @@ public class TimeSlot {
     public boolean isAvailable() {
         return this.status == TimeSlotStatus.AVAILABLE;
     }
+
+    public void available() { this.status = TimeSlotStatus.AVAILABLE; }
 
     public void hold() {
         this.status = TimeSlotStatus.HOLD;

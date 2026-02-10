@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Component
 @RequiredArgsConstructor
@@ -30,14 +32,23 @@ public class DataInit implements CommandLineRunner {
         roomA.setCategory("ROOM");
         resourceRepository.save(roomA);
 
-        // 2.해당 Resource에 대한 TimeSlot 생성 (반복문으로 여러 개 생성 가능)
-        for (int i = 9; i < 18; i++) {
-            TimeSlot slot = new TimeSlot();
-            slot.setResource(roomA);
-            slot.setStartTime(LocalDateTime.of(2024, 5, 20, i, 0));
-            slot.setEndTime(LocalDateTime.of(2024, 5, 20, i + 1, 0));
-            slot.setStatus(TimeSlotStatus.AVAILABLE);
-            timeSlotRepository.save(slot);
+        // 2026년 2월 한 달 데이터 생성
+        LocalDate startDate = LocalDate.of(2026, 2, 1);
+        LocalDate endDate = LocalDate.of(2026, 2, 28);
+
+        for(LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+            // 2.해당 Resource에 대한 TimeSlot 생성 (반복문으로 여러 개 생성 가능)
+            for (int i = 9; i < 18; i++) {
+                TimeSlot slot = new TimeSlot();
+                slot.setResource(roomA);
+                slot.setReservationDate(date);
+                slot.setStartTime(LocalTime.of(i,0));
+                slot.setEndTime(LocalTime.of(i+1,0));
+                slot.setStatus(TimeSlotStatus.AVAILABLE);
+                timeSlotRepository.save(slot);
+            }
         }
+
+
     }
 }
