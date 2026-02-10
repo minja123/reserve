@@ -1,7 +1,6 @@
 package com.example.reserve.scheduler;
 
 import com.example.reserve.entity.Reservation;
-import com.example.reserve.repository.PaymentRepository;
 import com.example.reserve.repository.ReservationRepository;
 import com.example.reserve.service.ReservationService;
 import lombok.RequiredArgsConstructor;

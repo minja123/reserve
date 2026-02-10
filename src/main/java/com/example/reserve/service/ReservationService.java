@@ -8,7 +8,6 @@ import com.example.reserve.repository.ReservationRepository;
 import com.example.reserve.repository.TimeSlotRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
